@@ -98,9 +98,12 @@ def analyze_input(text):
     return keyword, genre, tempo, mood
 
 
-def ranked_songs(keyword, genre, tempo, mood):
+def ranked_songs(keyword, genre, tempo, mood, song_list=None):
+    if song_list is None:
+        song_list = songs
+
     results = []
-    for song in songs:
+    for song in song_list:
         results.append((song.score(keyword, genre, tempo, mood), song))
     return sorted(results, key=lambda x: x[0], reverse=True)
 
