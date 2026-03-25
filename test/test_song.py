@@ -1,5 +1,5 @@
 import unittest
-from songchatbot import Song
+from src.Songchatbot import Song
 
 class TestSongClass(unittest.TestCase):
     def setUp(self): self.song = Song( title="Test Song", keywords=["love", "summer", "party"], genre="pop", tempo="fast", mood="happy" )

@@ -1,5 +1,5 @@
 import unittest
-import songchatbot  # dein Modul, in dem analyze_input definiert ist
+from src.Songchatbot import songchatbot  # dein Modul, in dem analyze_input definiert ist
 
 class TestAnalyzeInput(unittest.TestCase):
 
