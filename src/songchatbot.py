@@ -228,5 +228,5 @@ add_message(
     "Willkommen! 🎵\n"
     "Bitte gebe jeweils kommasepariert eine Kategorie, Genre, Tempo(slow/medium/fast), Stimmung an.\n"
 )
-
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()
