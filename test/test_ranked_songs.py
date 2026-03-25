@@ -1,5 +1,5 @@
 import unittest
-from src.Songchatbot import Song, ranked_songs  # Modulname anpassen!
+from src.songchatbot import Song, ranked_songs  # Modulname anpassen!
 
 
 class TestRankedSongs(unittest.TestCase):
