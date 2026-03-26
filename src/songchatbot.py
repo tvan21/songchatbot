@@ -169,64 +169,65 @@ class Chatbot:
 # =========================
 # GUI (DEIN DESIGN)
 # =========================
-
-root = tk.Tk()
-root.title("🎵 Song-Chatbot")
-root.geometry("550x700")
-root.configure(bg="#f0f0f5")
-
-chatbot = Chatbot()
-
-header = tk.Frame(root, bg="#7c3aed", height=100)
-header.pack(fill=tk.X, padx=10, pady=10)
-header.pack_propagate(False)
-
-tk.Label(
-    header,
-    text="🎵 Song-Chatbot",
-    font=("Segoe UI", 20, "bold"),
-    bg="#7c3aed",
-    fg="white"
-).pack(pady=10)
-
-tk.Label(
-    header,
-    text="Finde deinen perfekten Song",
-    font=("Segoe UI", 11),
-    bg="#7c3aed",
-    fg="#e9d5ff"
-).pack()
-
-chat_display = scrolledtext.ScrolledText(
-    root,
-    wrap=tk.WORD,
-    font=("Segoe UI", 10),
-    bg="#fafafa",
-    state=tk.DISABLED
-)
-chat_display.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
-
-entry = tk.Entry(root, font=("Segoe UI", 11))
-entry.pack(fill=tk.X, padx=10, pady=10)
-
-def add_message(sender, msg):
-    chat_display.config(state=tk.NORMAL)
-    chat_display.insert(tk.END, f"{sender}: {msg}\n\n")
-    chat_display.config(state=tk.DISABLED)
-    chat_display.see(tk.END)
-
-def send(event=None):
-    msg = entry.get()
-    entry.delete(0, tk.END)
-    add_message("Du", msg)
-    add_message("Bot", chatbot.process_message(msg))
-
-entry.bind("<Return>", send)
-
-add_message(
-    "Bot",
-    "Willkommen! 🎵\n"
-    "Bitte gebe jeweils kommasepariert eine Kategorie, Genre, Tempo(slow/medium/fast), Stimmung an.\n"
-)
 if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("🎵 Song-Chatbot")
+    root.geometry("550x700")
+    root.configure(bg="#f0f0f5")
+
+    chatbot = Chatbot()
+
+    header = tk.Frame(root, bg="#7c3aed", height=100)
+    header.pack(fill=tk.X, padx=10, pady=10)
+    header.pack_propagate(False)
+
+    tk.Label(
+        header,
+        text="🎵 Song-Chatbot",
+        font=("Segoe UI", 20, "bold"),
+        bg="#7c3aed",
+        fg="white"
+    ).pack(pady=10)
+
+    tk.Label(
+        header,
+        text="Finde deinen perfekten Song",
+        font=("Segoe UI", 11),
+        bg="#7c3aed",
+        fg="#e9d5ff"
+    ).pack()
+
+    chat_display = scrolledtext.ScrolledText(
+        root,
+        wrap=tk.WORD,
+        font=("Segoe UI", 10),
+        bg="#fafafa",
+        state=tk.DISABLED
+    )
+    chat_display.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
+
+    entry = tk.Entry(root, font=("Segoe UI", 11))
+    entry.pack(fill=tk.X, padx=10, pady=10)
+
+    def add_message(sender, msg):
+        chat_display.config(state=tk.NORMAL)
+        chat_display.insert(tk.END, f"{sender}: {msg}\n\n")
+        chat_display.config(state=tk.DISABLED)
+        chat_display.see(tk.END)
+
+    def send(event=None):
+        msg = entry.get()
+        entry.delete(0, tk.END)
+        add_message("Du", msg)
+        add_message("Bot", chatbot.process_message(msg))
+
+    entry.bind("<Return>", send)
+
+    add_message(
+        "Bot",
+        "Willkommen! 🎵\n"
+        "Bitte gebe jeweils kommasepariert eine Kategorie, Genre, Tempo(slow/medium/fast), Stimmung an.\n"
+    )
+
     root.mainloop()
+    
