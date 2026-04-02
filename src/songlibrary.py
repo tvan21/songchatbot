@@ -1,6 +1,8 @@
 import re
-from .song import Song
-
+try:
+    from .song import Song
+except ImportError:
+    from song import Song
 
 class SongLibrary:
     GENRES = ["pop", "hiphop", "rock", "latin", "edm", "jazz", "reggae", "rnb", "metal", "soul", "classical", "lofi"]
