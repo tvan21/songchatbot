@@ -180,7 +180,7 @@ function sendMessage() {
         body: JSON.stringify({message: text})
     })
     .then(res => res.json())
-    .then(data => addMessage("bot", data.reply));
+    .then(data => addMessage("bot", data.response));
 }
 
 // Song hinzufügen
@@ -200,7 +200,7 @@ function addSong() {
         body: JSON.stringify(data)
     })
     .then(res => res.json())
-    .then(data => addMessage("bot", data.message));
+    .then(data => addMessage("bot", data.response));
 }
 
 // Enter drücken
@@ -210,7 +210,12 @@ document.getElementById("userInput")
 });
 
 // Startnachricht
-addMessage("bot", "Willkommen! Was möchtest du hören?");
+// ✅ NEU – holt den Text vom Backend
+window.onload = async () => {
+    const res = await fetch("/welcome");
+    const data = await res.json();
+    addMessage("bot", data.response);
+};
 </script>
 
 </body>
