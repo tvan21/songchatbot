@@ -27,7 +27,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
 
-WELCOME_TEXT = "🎵 Willkommen!\nBeschreibe einfach, was du hören möchtest."
+WELCOME_TEXT = "🎵 Willkommen!\nBeschreibe einfach, was du hören möchtest. Gib eine Kategorie, Genre, Tempo oder Mood ein."
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):

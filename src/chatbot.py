@@ -1,5 +1,5 @@
 import re
-from .song import Song
+from song import Song
 
 
 songs = [
