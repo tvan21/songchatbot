@@ -2,7 +2,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-from chatbot import Chatbot
+from .chatbot import Chatbot
 
 HTML_FILE = Path(__file__).parent / "static" / "index.html"
 
