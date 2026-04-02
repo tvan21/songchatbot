@@ -1,5 +1,7 @@
-from .songlibrary import SongLibrary
-
+try:
+    from .songlibrary import SongLibrary
+except ImportError:
+    from songlibrary import SongLibrary
 
 analyze_input = SongLibrary.analyze_input
 ranked_songs = SongLibrary.ranked_songs
