@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Song-Chatbot Deluxe</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f5;
+    margin: 0;
+}
+
+/* Header */
+.header {
+    background: #7c3aed;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Chat */
+.chat-box {
+    height: 300px;
+    overflow-y: auto;
+    background: #fafafa;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.user { color: blue; }
+.bot { color: green; }
+
+/* Input */
+.input-area {
+    display: flex;
+    margin: 10px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    background: #7c3aed;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Form */
+.form-container {
+    background: white;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.form-container h3 {
+    margin-top: 0;
+}
+
+.form-row {
+    margin-bottom: 10px;
+}
+
+select, input {
+    width: 100%;
+    padding: 8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">🎵 Song-Chatbot Deluxe</div>
+
+<!-- Chat -->
+<div id="chat" class="chat-box"></div>
+
+<div class="input-area">
+    <input type="text" id="userInput" placeholder="Schreib etwas...">
+    <button onclick="sendMessage()">Senden</button>
+</div>
+
+<!-- Formular -->
+<div class="form-container">
+    <h3>💾 Neuen Song hinzufügen</h3>
+
+    <div class="form-row">
+        <input type="text" id="title" placeholder="Titel">
+    </div>
+
+    <div class="form-row">
+        <input type="text" id="artist" placeholder="Interpret">
+    </div>
+
+    <div class="form-row">
+        <select id="genre">
+            <option>pop</option>
+            <option>hiphop</option>
+            <option>rock</option>
+            <option>latin</option>
+            <option>edm</option>
+            <option>jazz</option>
+            <option>reggae</option>
+            <option>rnb</option>
+            <option>metal</option>
+            <option>soul</option>
+            <option>classical</option>
+            <option>lofi</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <select id="tempo">
+            <option>slow</option>
+            <option selected>medium</option>
+            <option>fast</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <select id="mood">
+            <option>happy</option>
+            <option>sad</option>
+            <option>energetic</option>
+            <option>peaceful</option>
+            <option>moody</option>
+            <option>angry</option>
+            <option>romantic</option>
+            <option>aggressive</option>
+            <option>emotional</option>
+            <option>warm</option>
+            <option>cool</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <input type="text" id="keywords" placeholder="Keywords (mit Komma getrennt)">
+    </div>
+
+    <button onclick="addSong()">Song speichern</button>
+</div>
+
+<script>
+// Chat anzeigen
+function addMessage(sender, text) {
+    const chat = document.getElementById("chat");
+    const div = document.createElement("div");
+    div.className = "message";
+    div.innerHTML = `<b class="${sender}">${sender}:</b> ${text}`;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// Nachricht senden
+function sendMessage() {
+    const input = document.getElementById("userInput");
+    const text = input.value;
+    if (!text) return;
+
+    addMessage("user", text);
+    input.value = "";
+
+    // 🔥 Hier Backend anbinden
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: text})
+    })
+    .then(res => res.json())
+    .then(data => addMessage("bot", data.reply));
+}
+
+// Song hinzufügen
+function addSong() {
+    const data = {
+        title: document.getElementById("title").value,
+        artist: document.getElementById("artist").value,
+        genre: document.getElementById("genre").value,
+        tempo: document.getElementById("tempo").value,
+        mood: document.getElementById("mood").value,
+        keywords: document.getElementById("keywords").value
+    };
+
+    fetch("/add_song", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => addMessage("bot", data.message));
+}
+
+// Enter drücken
+document.getElementById("userInput")
+.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+
+// Startnachricht
+addMessage("bot", "Willkommen! Was möchtest du hören?");
+</script>
+
+</body>
+</html>
