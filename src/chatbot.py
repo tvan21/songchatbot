@@ -1,4 +1,4 @@
-from songlibrary import SongLibrary
+from .songlibrary import SongLibrary
 
 
 analyze_input = SongLibrary.analyze_input
