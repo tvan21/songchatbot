@@ -60,7 +60,7 @@ MOODS = {
     "sad": ["unhappy", "down", "blue"],
     "energetic": ["lively", "excited", "active"],
     "peaceful": ["calm", "serene"],
-    "moody": ["dark", "gloomy"],
+    "moody": ["dark", "gloomy", "passionate"],
     "angry": ["mad", "furious"],
     "romantic": ["loving", "affectionate"],
     "aggressive": ["fierce", "intense"],
