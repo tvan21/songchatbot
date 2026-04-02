@@ -77,11 +77,179 @@ select, input {
     width: 100%;
     padding: 8px;
 }
+
+/* Welcome Overlay */
+.welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-modal {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.welcome-modal h2 {
+    color: #7c3aed;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.welcome-modal p {
+    color: #374151;
+    margin-bottom: 16px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.step-number {
+    background: #7c3aed;
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.step-text strong {
+    display: block;
+    margin-bottom: 3px;
+    color: #111827;
+}
+
+.step-text p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #6b7280;
+}
+
+.examples-box {
+    background: #f5f3ff;
+    border-left: 4px solid #7c3aed;
+    padding: 10px 16px;
+    border-radius: 5px;
+    margin: 16px 0;
+}
+
+.examples-box strong {
+    color: #374151;
+}
+
+.examples-box ul {
+    margin: 8px 0 0 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.examples-box li {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #374151;
+}
+
+.examples-box code {
+    background: #ede9fe;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.tip-text {
+    font-size: 0.88em;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.welcome-modal .start-btn {
+    width: 100%;
+    padding: 12px;
+    background: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.welcome-modal .start-btn:hover {
+    background: #6d28d9;
+}
 </style>
 
 </head>
 
 <body>
+
+<!-- Welcome / Anleitung Overlay -->
+<div id="welcome-overlay" class="welcome-overlay">
+    <div class="welcome-modal">
+        <h2>🎵 Willkommen beim Song-Chatbot!</h2>
+        <p>Hier findest du deinen perfekten Song. So funktioniert der Chatbot:</p>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-text">
+                <strong>Beschreibe, was du hören möchtest</strong>
+                <p>Tippe beliebige Keywords, Genre, Tempo, Stimmung  in das Chatfeld und drücke <em>Senden</em> oder <em>Enter</em>.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-text">
+                <strong>Songvorschlag bewerten</strong>
+                <p>Der Bot schlägt dir einen Song vor. Antworte mit <strong>ja</strong>, wenn er passt &ndash; oder mit <strong>nein</strong> für den nächsten Vorschlag.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-text">
+                <strong>Neue Suche starten oder beenden</strong>
+                <p>Nach einem Match kannst du mit <strong>neu</strong> eine weitere Suche starten oder den Chat einfach schließen.</p>
+            </div>
+        </div>
+
+        <div class="examples-box">
+            <strong>Beispiel-Eingaben:</strong>
+            <ul>
+                <li>👉 <code>love pop fast happy</code></li>
+                <li>👉 <code>party edm energetic</code></li>
+                <li>👉 <code>ruhiger jazz song</code></li>
+                <li>👉 <code>sad slow romantic</code></li>
+            </ul>
+        </div>
+
+        <p class="tip-text">💡 Tipp: Im unteren Bereich der Seite kannst du auch eigene Songs zur Playlist hinzufügen!</p>
+
+        <button class="start-btn" onclick="closeWelcome()">Los geht's! 🚀</button>
+    </div>
+</div>
 
 <div class="header">🎵 Song-Chatbot Deluxe</div>
 
@@ -208,6 +376,11 @@ document.getElementById("userInput")
 .addEventListener("keypress", function(e) {
     if (e.key === "Enter") sendMessage();
 });
+
+// Welcome Overlay schließen
+function closeWelcome() {
+    document.getElementById("welcome-overlay").style.display = "none";
+}
 
 // Startnachricht
 addMessage("bot", "Willkommen! Was möchtest du hören?");
