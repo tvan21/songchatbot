@@ -1,390 +1,447 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Song-Chatbot Deluxe</title>
 
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f0f0f5;
-    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #121212;
+    color: #e5e7eb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Header */
+
+
+/* ── Header ── */
 .header {
-    background: #7c3aed;
-    color: white;
-    padding: 20px;
-    text-align: center;
+    background: #1e1e1e;
+    border-bottom: 2px solid #a855f7;
+    padding: 16px 24px;
     font-size: 20px;
     font-weight: bold;
+    color: #a855f7;
+    letter-spacing: 1px;
 }
 
-/* Chat */
-.chat-box {
-    height: 300px;
-    overflow-y: auto;
-    background: #fafafa;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
+/* ── Tabs ── */
+.tabs { display: flex; background: #1e1e1e; border-bottom: 1px solid #2d2d2d; }
+.tab-btn {
+    flex: 1; padding: 14px; background: #2d2d2d; color: #9ca3af;
+    border: none; cursor: pointer; font-size: 14px; font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+}
+.tab-btn:hover { background: #374151; color: #e5e7eb; }
+.tab-btn.active { background: #a855f7; color: white; }
+
+/* ── Tab panels ── */
+.tab-panel { display: none; flex: 1; flex-direction: column; padding: 16px; }
+.tab-panel.active { display: flex; }
+
+/* ── Chat display ── */
+#chat-display {
+    flex: 1; background: #1e1e1e; border-radius: 10px; padding: 16px;
+    overflow-y: auto; min-height: 360px; max-height: 400px;
+    margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px;
+}
+.msg { display: flex; flex-direction: column; max-width: 80%; }
+.msg.du     { align-self: flex-end; }
+.msg.bot    { align-self: flex-start; }
+.msg.system { align-self: center; }
+.msg-label { font-size: 11px; font-weight: bold; margin-bottom: 3px; }
+.msg.du     .msg-label { color: #a855f7; text-align: right; }
+.msg.bot    .msg-label { color: #10b981; }
+.msg.system .msg-label { color: #3b82f6; text-align: center; }
+.msg-bubble {
+    padding: 10px 14px; border-radius: 12px; font-size: 14px;
+    line-height: 1.5; white-space: pre-wrap; word-break: break-word;
+}
+.msg.du     .msg-bubble { background: #2e1065; color: #e9d5ff; border-bottom-right-radius: 2px; }
+.msg.bot    .msg-bubble { background: #064e3b; color: #d1fae5; border-bottom-left-radius: 2px; }
+.msg.system .msg-bubble { background: #1e3a5f; color: #bfdbfe; border-radius: 8px; font-size: 13px; }
+
+/* ── Chat input ── */
+.chat-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.chat-input-row input {
+    flex: 1; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px;
+    color: white; padding: 10px 14px; font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+}
+.chat-input-row input:focus { border-color: #a855f7; }
+.chat-extra-row { display: flex; gap: 8px; }
+
+/* ── Buttons ── */
+.btn {
+    border: none; border-radius: 8px; cursor: pointer; font-size: 13px;
+    font-weight: 700; padding: 10px 18px; transition: opacity 0.2s; color: white;
+}
+.btn:hover { opacity: 0.85; }
+.btn-purple { background: #a855f7; }
+.btn-blue   { background: #3b82f6; }
+.btn-red    { background: #ef4444; }
+.btn-green  { background: #10b981; }
+.btn-amber  { background: #f59e0b; }
+.btn-gray   { background: #4b5563; }
+.btn-full   { width: 100%; padding: 12px; font-size: 14px; }
+
+/* ── Section titles ── */
+.section-title { font-size: 15px; font-weight: 700; margin: 20px 0 12px; }
+.section-title.purple { color: #a855f7; }
+.section-title.green  { color: #10b981; }
+.section-title.blue   { color: #3b82f6; }
+
+/* ── Form card ── */
+.form-card {
+    background: #1e1e1e; border-radius: 10px; padding: 18px;
+    display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;
+}
+.form-row { display: flex; gap: 8px; }
+.form-row .sel-wrap { flex: 1; }
+input.field, select.field {
+    width: 100%; background: #2d2d2d; border: 1px solid #3d3d3d;
+    border-radius: 8px; color: #e5e7eb; padding: 9px 12px; font-size: 13px;
+    outline: none; transition: border-color 0.2s;
+}
+input.field:focus, select.field:focus { border-color: #a855f7; }
+select.field option { background: #2d2d2d; }
+
+/* ── Playlist box ── */
+#pl-songs-box {
+    background: #1e1e1e; border-radius: 10px; padding: 14px; min-height: 140px;
+    font-family: "Consolas", monospace; font-size: 13px; color: #10b981;
+    white-space: pre-wrap; margin-bottom: 12px; line-height: 1.6;
 }
 
-.message {
-    margin-bottom: 10px;
-}
-
-.user { color: blue; }
-.bot { color: green; }
-
-/* Input */
-.input-area {
-    display: flex;
-    margin: 10px;
-}
-
-input[type="text"] {
-    flex: 1;
-    padding: 10px;
-}
-
-button {
-    padding: 10px;
-    background: #7c3aed;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-/* Form */
-.form-container {
-    background: white;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 10px;
-}
-
-.form-container h3 {
-    margin-top: 0;
-}
-
-.form-row {
-    margin-bottom: 10px;
-}
-
-select, input {
-    width: 100%;
-    padding: 8px;
-}
-
-/* Welcome Overlay */
+/* ── Welcome overlay ── */
 .welcome-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
 }
-
 .welcome-modal {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    max-width: 500px;
-    width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    background: #1e1e1e; border: 1px solid #a855f7; border-radius: 16px;
+    padding: 32px; max-width: 520px; width: 92%; max-height: 88vh;
+    overflow-y: auto; box-shadow: 0 10px 50px rgba(168,85,247,0.25);
 }
-
-.welcome-modal h2 {
-    color: #7c3aed;
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-
-.welcome-modal p {
-    color: #374151;
-    margin-bottom: 16px;
-}
-
-.step {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 14px;
-}
-
+.welcome-modal h2 { color: #a855f7; font-size: 20px; margin-bottom: 10px; }
+.welcome-modal p  { color: #9ca3af; font-size: 14px; margin-bottom: 18px; }
+.step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
 .step-number {
-    background: #7c3aed;
-    color: white;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    flex-shrink: 0;
+    background: #a855f7; color: white; border-radius: 50%;
+    width: 28px; height: 28px; display: flex; align-items: center;
+    justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0;
 }
-
-.step-text strong {
-    display: block;
-    margin-bottom: 3px;
-    color: #111827;
-}
-
-.step-text p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #6b7280;
-}
-
+.step-text strong { display: block; color: #e5e7eb; margin-bottom: 3px; font-size: 14px; }
+.step-text p { margin: 0; font-size: 13px; color: #6b7280; }
 .examples-box {
-    background: #f5f3ff;
-    border-left: 4px solid #7c3aed;
-    padding: 10px 16px;
-    border-radius: 5px;
-    margin: 16px 0;
+    background: #2d1a4a; border-left: 4px solid #a855f7;
+    padding: 12px 16px; border-radius: 6px; margin: 16px 0;
 }
-
-.examples-box strong {
-    color: #374151;
-}
-
-.examples-box ul {
-    margin: 8px 0 0 0;
-    padding-left: 0;
-    list-style: none;
-}
-
-.examples-box li {
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    color: #374151;
-}
-
-.examples-box code {
-    background: #ede9fe;
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-family: monospace;
-}
-
-.tip-text {
-    font-size: 0.88em;
-    color: #6b7280;
-    margin-bottom: 20px;
-}
-
-.welcome-modal .start-btn {
-    width: 100%;
-    padding: 12px;
-    background: #7c3aed;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
+.examples-box strong { color: #e9d5ff; font-size: 13px; }
+.examples-box ul { list-style: none; margin-top: 8px; padding-left: 0; }
+.examples-box li { font-size: 13px; color: #c4b5fd; margin-bottom: 5px; }
+.examples-box code { background: #4c1d95; padding: 1px 6px; border-radius: 4px; font-family: monospace; }
+.tip-text { font-size: 12px; color: #6b7280; margin-bottom: 20px; }
+.start-btn {
+    width: 100%; padding: 12px; background: #a855f7; color: white;
+    border: none; border-radius: 8px; font-size: 16px; cursor: pointer;
     transition: background 0.2s;
 }
-
-.welcome-modal .start-btn:hover {
-    background: #6d28d9;
-}
+.start-btn:hover { background: #9333ea; }
 </style>
-
 </head>
-
 <body>
 
-<!-- Welcome / Anleitung Overlay -->
+<!-- Welcome Overlay -->
 <div id="welcome-overlay" class="welcome-overlay">
     <div class="welcome-modal">
-        <h2>🎵 Willkommen beim Song-Chatbot!</h2>
+        <h2>&#127925; Willkommen beim Song-Chatbot Deluxe!</h2>
         <p>Hier findest du deinen perfekten Song. So funktioniert der Chatbot:</p>
-
         <div class="step">
             <div class="step-number">1</div>
             <div class="step-text">
-                <strong>Beschreibe, was du hören möchtest</strong>
-                <p>Tippe beliebige Keywords, Genre, Tempo, Stimmung  in das Chatfeld und drücke <em>Senden</em> oder <em>Enter</em>.</p>
+                <strong>Beschreibe, was du hoeren moechtest</strong>
+                <p>Tippe Keywords, Genre, Tempo oder Stimmung in das Chatfeld und druecke Senden oder Enter.</p>
             </div>
         </div>
-
         <div class="step">
             <div class="step-number">2</div>
             <div class="step-text">
                 <strong>Songvorschlag bewerten</strong>
-                <p>Der Bot schlägt dir einen Song vor. Antworte mit <strong>ja</strong>, wenn er passt &ndash; oder mit <strong>nein</strong> für den nächsten Vorschlag.</p>
+                <p>Antworte mit ja, wenn er passt - oder mit nein fuer den naechsten Vorschlag.</p>
             </div>
         </div>
-
         <div class="step">
             <div class="step-number">3</div>
             <div class="step-text">
-                <strong>Neue Suche starten oder beenden</strong>
-                <p>Nach einem Match kannst du mit <strong>neu</strong> eine weitere Suche starten oder den Chat einfach schließen.</p>
+                <strong>Playlist speichern</strong>
+                <p>Gefallene Songs kannst du direkt in eine Playlist speichern.</p>
             </div>
         </div>
-
         <div class="examples-box">
             <strong>Beispiel-Eingaben:</strong>
             <ul>
-                <li>👉 <code>love pop fast happy</code></li>
-                <li>👉 <code>party edm energetic</code></li>
-                <li>👉 <code>ruhiger jazz song</code></li>
-                <li>👉 <code>sad slow romantic</code></li>
+                <li>love pop fast happy</li>
+                <li>party edm energetic</li>
+                <li>ruhiger jazz song</li>
+                <li>sad slow romantic</li>
             </ul>
         </div>
-
-        <p class="tip-text">💡 Tipp: Im unteren Bereich der Seite kannst du auch eigene Songs zur Playlist hinzufügen!</p>
-
-        <button class="start-btn" onclick="closeWelcome()">Los geht's! 🚀</button>
+        <p class="tip-text">Tipp: Im Tab Verwaltung kannst du eigene Songs und Playlists anlegen.</p>
+        <button class="start-btn" onclick="closeWelcome()">Los geht es!</button>
     </div>
 </div>
 
-<div class="header">🎵 Song-Chatbot Deluxe</div>
+<!-- Header -->
+<div class="header">&#127925; Song-Chatbot Deluxe</div>
 
-<!-- Chat -->
-<div id="chat" class="chat-box"></div>
-
-<div class="input-area">
-    <input type="text" id="userInput" placeholder="Schreib etwas...">
-    <button onclick="sendMessage()">Senden</button>
+<!-- Tabs -->
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('chat', this)">Chatbot</button>
+    <button class="tab-btn"        onclick="switchTab('admin', this)">Verwaltung</button>
+    <button class="tab-btn"        onclick="switchTab('playlists', this)">Playlists</button>
 </div>
 
-<!-- Formular -->
-<div class="form-container">
-    <h3>💾 Neuen Song hinzufügen</h3>
-
-    <div class="form-row">
-        <input type="text" id="title" placeholder="Titel">
+<!-- TAB 1: CHAT -->
+<div id="tab-chat" class="tab-panel active">
+    <div id="chat-display"></div>
+    <div class="chat-input-row">
+        <input id="userInput" type="text" placeholder="Beschreibe, was du hoeren moechtest..." />
+        <button class="btn btn-purple" onclick="sendMessage()">Senden</button>
     </div>
-
-    <div class="form-row">
-        <input type="text" id="artist" placeholder="Interpret">
+    <div class="chat-extra-row">
+        <button class="btn btn-blue" onclick="randomVibe()" style="flex:1">UEBERRASCH MICH</button>
+        <button class="btn btn-red"  onclick="openYouTube()">YouTube</button>
+        <button class="btn btn-gray" onclick="resetChat()">Reset</button>
     </div>
+</div>
 
-    <div class="form-row">
-        <select id="genre">
-            <option>pop</option>
-            <option>hiphop</option>
-            <option>rock</option>
-            <option>latin</option>
-            <option>edm</option>
-            <option>jazz</option>
-            <option>reggae</option>
-            <option>rnb</option>
-            <option>metal</option>
-            <option>soul</option>
-            <option>classical</option>
-            <option>lofi</option>
-        </select>
+<!-- TAB 2: VERWALTUNG -->
+<div id="tab-admin" class="tab-panel" style="overflow-y:auto;">
+    <div class="section-title purple">Neuen Song hinzufuegen</div>
+    <div class="form-card">
+        <input id="s-title"   class="field" type="text" placeholder="Titel" />
+        <input id="s-artist"  class="field" type="text" placeholder="Artist" />
+        <div class="form-row">
+            <div class="sel-wrap">
+                <select id="s-genre" class="field">
+                    <option>pop</option><option>hiphop</option><option>rock</option>
+                    <option>latin</option><option>edm</option><option>jazz</option>
+                    <option>reggae</option><option>rnb</option><option>metal</option>
+                    <option>soul</option><option>classical</option><option>lofi</option>
+                </select>
+            </div>
+            <div class="sel-wrap">
+                <select id="s-mood" class="field">
+                    <option>happy</option><option>sad</option><option>energetic</option>
+                    <option>peaceful</option><option>moody</option><option>angry</option>
+                    <option>romantic</option><option>aggressive</option><option>emotional</option>
+                    <option>warm</option><option>cool</option>
+                </select>
+            </div>
+            <div class="sel-wrap">
+                <select id="s-tempo" class="field">
+                    <option>slow</option><option selected>medium</option><option>fast</option>
+                </select>
+            </div>
+        </div>
+        <input id="s-keywords" class="field" type="text" placeholder="Keywords (kommagetrennt)" />
+        <button class="btn btn-purple btn-full" onclick="saveSong()">SONG SPEICHERN</button>
     </div>
-
-    <div class="form-row">
-        <select id="tempo">
-            <option>slow</option>
-            <option selected>medium</option>
-            <option>fast</option>
-        </select>
+    <div class="section-title green">Playlist erstellen</div>
+    <div class="form-card">
+        <input id="new-pl-name" class="field" type="text" placeholder="Playlist-Name" />
+        <button class="btn btn-green btn-full" onclick="createPlaylist()">PLAYLIST ERSTELLEN</button>
     </div>
+</div>
 
-    <div class="form-row">
-        <select id="mood">
-            <option>happy</option>
-            <option>sad</option>
-            <option>energetic</option>
-            <option>peaceful</option>
-            <option>moody</option>
-            <option>angry</option>
-            <option>romantic</option>
-            <option>aggressive</option>
-            <option>emotional</option>
-            <option>warm</option>
-            <option>cool</option>
-        </select>
+<!-- TAB 3: PLAYLISTS -->
+<div id="tab-playlists" class="tab-panel" style="overflow-y:auto;">
+    <div class="section-title blue" style="margin-top:4px;">Playlist anzeigen</div>
+    <div class="form-card">
+        <input id="pl-view-name" class="field" type="text" placeholder="Playlist-Name" />
+        <button class="btn btn-blue btn-full" onclick="showPlaylist()">INHALT ANZEIGEN</button>
     </div>
-
-    <div class="form-row">
-        <input type="text" id="keywords" placeholder="Keywords (mit Komma getrennt)">
-    </div>
-
-    <button onclick="addSong()">Song speichern</button>
+    <div id="pl-songs-box">Noch kein Inhalt geladen.</div>
+    <button class="btn btn-amber btn-full" onclick="exportTxt()">ALS .TXT EXPORTIEREN</button>
 </div>
 
 <script>
-// Chat anzeigen
-function addMessage(sender, text) {
-    const chat = document.getElementById("chat");
-    const div = document.createElement("div");
-    div.className = "message";
-    div.innerHTML = `<b class="${sender}">${sender}:</b> ${text}`;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-}
+    var currentSong = null;
 
-// Nachricht senden
-function sendMessage() {
-    const input = document.getElementById("userInput");
-    const text = input.value;
-    if (!text) return;
+    function switchTab(name, btn) {
+        document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.getElementById('tab-' + name).classList.add('active');
+        btn.classList.add('active');
+    }
 
-    addMessage("user", text);
-    input.value = "";
+    function closeWelcome() {
+        document.getElementById('welcome-overlay').style.display = 'none';
+    }
 
-    // 🔥 Hier Backend anbinden
-    fetch("/chat", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message: text})
-    })
-    .then(res => res.json())
-    .then(data => addMessage("bot", data.reply));
-}
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+    }
 
-// Song hinzufügen
-function addSong() {
-    const data = {
-        title: document.getElementById("title").value,
-        artist: document.getElementById("artist").value,
-        genre: document.getElementById("genre").value,
-        tempo: document.getElementById("tempo").value,
-        mood: document.getElementById("mood").value,
-        keywords: document.getElementById("keywords").value
-    };
+    function addMessage(type, text) {
+        var box = document.getElementById('chat-display');
+        var wrap = document.createElement('div');
+        wrap.className = 'msg ' + type;
+        var labels = { du: 'Du', bot: 'Bot', system: 'System' };
+        wrap.innerHTML =
+            '<div class="msg-label">' + (labels[type] || type) + '</div>' +
+            '<div class="msg-bubble">' + escHtml(text) + '</div>';
+        box.appendChild(wrap);
+        box.scrollTop = box.scrollHeight;
+    }
 
-    fetch("/add_song", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => addMessage("bot", data.message));
-}
+    function extractSong(text) {
+        var m = text.match(/\u{1F3B5}\s+(.+?)\s+von\s+(.+?)\s+\(/u);
+        if (m) return { title: m[1].trim(), artist: m[2].trim() };
+        var m2 = text.match(/\u{1F3B5}\s+(.+?)\s+\(Score/u);
+        if (m2) return { title: m2[1].trim(), artist: '' };
+        return null;
+    }
 
-// Enter drücken
-document.getElementById("userInput")
-.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendMessage();
-});
+    async function sendMessage() {
+        var input = document.getElementById('userInput');
+        var text = input.value.trim();
+        if (!text) return;
+        addMessage('du', text);
+        input.value = '';
+        try {
+            var res = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+            var data = await res.json();
+            addMessage('bot', data.response);
+            var s = extractSong(data.response);
+            if (s) currentSong = s;
+        } catch (e) {
+            addMessage('system', 'Verbindungsfehler.');
+        }
+    }
 
-// Welcome Overlay schließen
-function closeWelcome() {
-    document.getElementById("welcome-overlay").style.display = "none";
-}
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('userInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+        addMessage('bot', 'Willkommen! Beschreibe, was du hoeren moechtest.');
+    });
 
-// Startnachricht
-addMessage("bot", "Willkommen! Was möchtest du hören?");
+    async function resetChat() {
+        await fetch('/reset', { method: 'POST' });
+        currentSong = null;
+        document.getElementById('chat-display').innerHTML = '';
+        addMessage('bot', 'Neue Suche! Beschreibe, was du hoeren moechtest.');
+    }
+
+    async function randomVibe() {
+        try {
+            var res = await fetch('/songs');
+            var songs = await res.json();
+            if (!songs.length) { addMessage('system', 'Keine Songs in der Datenbank.'); return; }
+            var s = songs[Math.floor(Math.random() * songs.length)];
+            var artist = s.artist ? ' von ' + s.artist : '';
+            addMessage('bot', 'Zufalls-Vibe: ' + s.title + artist);
+            currentSong = { title: s.title, artist: s.artist };
+        } catch (e) {
+            addMessage('system', 'Fehler beim Laden der Songs.');
+        }
+    }
+
+    function openYouTube() {
+        if (!currentSong) { alert('Lass dir erst einen Song empfehlen!'); return; }
+        var q = encodeURIComponent(currentSong.title + ' ' + currentSong.artist);
+        window.open('https://www.youtube.com/results?search_query=' + q, '_blank');
+    }
+
+    async function saveSong() {
+        var title = document.getElementById('s-title').value.trim();
+        if (!title) { alert('Bitte einen Titel eingeben.'); return; }
+        try {
+            var res = await fetch('/songs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: title,
+                    artist:   document.getElementById('s-artist').value.trim(),
+                    genre:    document.getElementById('s-genre').value,
+                    tempo:    document.getElementById('s-tempo').value,
+                    mood:     document.getElementById('s-mood').value,
+                    keywords: document.getElementById('s-keywords').value.trim()
+                })
+            });
+            if (res.ok) {
+                addMessage('system', 'Song ' + title + ' gespeichert!');
+                document.getElementById('s-title').value = '';
+                document.getElementById('s-artist').value = '';
+                document.getElementById('s-keywords').value = '';
+                switchTab('chat', document.querySelectorAll('.tab-btn')[0]);
+            }
+        } catch (e) {
+            addMessage('system', 'Fehler beim Speichern.');
+        }
+    }
+
+    async function createPlaylist() {
+        var name = document.getElementById('new-pl-name').value.trim();
+        if (!name) { alert('Bitte einen Playlist-Namen eingeben.'); return; }
+        try {
+            var res = await fetch('/playlists', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name })
+            });
+            if (res.ok) {
+                addMessage('system', 'Playlist ' + name + ' erstellt!');
+                document.getElementById('new-pl-name').value = '';
+                switchTab('chat', document.querySelectorAll('.tab-btn')[0]);
+            }
+        } catch (e) {
+            addMessage('system', 'Fehler beim Erstellen.');
+        }
+    }
+
+    async function showPlaylist() {
+        var name = document.getElementById('pl-view-name').value.trim();
+        if (!name) { alert('Bitte einen Playlist-Namen eingeben.'); return; }
+        var box = document.getElementById('pl-songs-box');
+        try {
+            var res = await fetch('/playlists/' + encodeURIComponent(name));
+            if (!res.ok) { box.textContent = 'Playlist nicht gefunden.'; return; }
+            var data = await res.json();
+            box.textContent = data.songs.length
+                ? data.songs.map(function(s) { return s.title + ' - ' + s.artist; }).join('\n')
+                : 'Playlist ist leer.';
+        } catch (e) {
+            box.textContent = 'Fehler beim Laden.';
+        }
+    }
+
+    function exportTxt() {
+        var content = document.getElementById('pl-songs-box').textContent.trim();
+        var name = document.getElementById('pl-view-name').value.trim() || 'playlist';
+        if (!content || content === 'Noch kein Inhalt geladen.' || content === 'Playlist ist leer.') {
+            alert('Keine Songs zum Exportieren.'); return;
+        }
+        var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'playlist_' + name.replace(/\s+/g, '_') + '.txt';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    }
 </script>
-
 </body>
 </html>
