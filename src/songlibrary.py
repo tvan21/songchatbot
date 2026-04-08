@@ -199,6 +199,13 @@ class SongLibrary:
     @staticmethod
     def get_playlist_songs(playlist_name):
         conn = sqlite3.connect(DB_PATH)
+        exists = conn.execute(
+            "SELECT 1 FROM playlists WHERE name = ?",
+            (playlist_name.strip().lower(),)
+        ).fetchone()
+        if not exists:
+            conn.close()
+            return None
         rows = conn.execute("""
             SELECT s.title, a.name
             FROM songs s
