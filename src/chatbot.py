@@ -9,9 +9,7 @@ ranked_songs = SongLibrary.ranked_songs
 
 class Chatbot:
     def __init__(self):
-        self.step = 1
-        self.results = []
-        self.index = 0
+        self.reset()
 
     def process_message(self, user_input):
         text = user_input.strip()
@@ -25,6 +23,10 @@ class Chatbot:
 
         if self.step == 2:
             if text.lower() in ["ja", "j", "yes", "y"]:
+                playlists = SongLibrary.get_playlists()
+                if playlists:
+                    self.step = 4
+                    return f"🔥 Super! Soll ich '{self.current_song.title}' in eine Playlist speichern? (ja/nein)"
                 self.step = 3
                 return "🎉 Super! Neue Suche starten? (neu / nein)"
             if text.lower() in ["nein", "n", "no"]:
@@ -45,6 +47,21 @@ class Chatbot:
                 )
             return "Bis zum nächsten Mal! 👋"
 
+        if self.step == 4:
+            if text.lower() in ["ja", "j", "yes", "y"]:
+                playlists = SongLibrary.get_playlists()
+                self.step = 5
+                return f"In welche Playlist? 📂\nVerfügbar: {', '.join(playlists)}"
+            self.step = 3
+            return "Alles klar! Neue Suche starten? (neu / nein)"
+
+        if self.step == 5:
+            success = SongLibrary.add_to_playlist(text, self.current_song.title)
+            self.step = 3
+            if success:
+                return f"✅ '{self.current_song.title}' wurde zu '{text}' hinzugefügt!\nNeue Suche starten? (neu / nein)"
+            return "Diese Playlist kenne ich nicht. Neue Suche starten? (neu / nein)"
+
         self.reset()
         return "❌ Keine passenden Songs gefunden."
 
@@ -54,9 +71,15 @@ class Chatbot:
             return "❌ Keine passenden Songs gefunden."
 
         score, song = self.results[self.index]
-        return f"🎵 {song.title} (Score: {score})\n\nGefällt dir der Song? (ja/nein)"
+        self.current_song = song
+        artist_info = f" von {song.artist}" if song.artist else ""
+        return f"🎵 {song.title}{artist_info} (Score: {score})\n\nGefällt dir der Song? (ja/nein)"
 
     def reset(self):
         self.step = 1
+        self.results = []
+        self.index = 0
+        self.current_song = None
+
         self.results = []
         self.index = 0
