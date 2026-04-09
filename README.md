@@ -1,8 +1,7 @@
 # Song Chatbot
 
-<<<<<<< HEAD
 This ChatBot helps Users to find songs that matches their Images or Videos for Social Media.
-=======
+
 Ein interaktiver Chatbot zur Song-Empfehlung mit Web-Interface, entwickelt mit Python und FastAPI.
 
 ## Beschreibung
@@ -155,25 +154,20 @@ flake8 . --select=E9,F63,F7,F82
 
 Das Projekt folgt einer **3-Tier-Architektur**:
 
-┌─────────────────────────────┐
-│  Presentation Layer         │
-│  (HTML/JavaScript)          │
-└─────────────┬───────────────┘
-              │
-┌─────────────▼───────────────┐
-│  Application Layer          │
-│  (FastAPI REST API)         │
-└─────────────┬───────────────┘
-              │
-┌─────────────▼───────────────┐
-│  Business Logic Layer       │
-│  (Chatbot, SongLibrary)     │
-└─────────────┬───────────────┘
-              │
-┌─────────────▼───────────────┐
-│  Data Layer                 │
-│  (SQLite Database)          │
-└─────────────────────────────┘
+
+Presentation Layer         
+(HTML/JavaScript)          
+
+  
+Application Layer          
+(FastAPI REST API)         
+
+Business Logic Layer       
+(Chatbot, SongLibrary)     
+
+Data Layer                 
+(SQLite Database)          
+
 
 ### Datenbank-Schema
 
@@ -219,4 +213,3 @@ Dieses Projekt wurde für akademische Zwecke entwickelt.
 - Erweiterte Such-Algorithmen
 - Song-Vorschau-Player
 - Export/Import von Playlists
->>>>>>> 39573cfca27a358884f80a933527f284aa2eb6a2
