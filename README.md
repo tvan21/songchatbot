@@ -188,9 +188,9 @@ Das Projekt folgt einer **3-Tier-Architektur**:
 
 GitHub Actions Workflow führt automatisch aus:
 
-- ✅ Dependency Installation
-- ✅ Linting mit flake8
-- ✅ Unit-Tests mit pytest
+- Dependency Installation
+- Linting mit flake8
+- Unit-Tests mit pytest
 
 Trigger: Push/Pull Request auf `master` oder `stage` Branch
 
@@ -210,9 +210,9 @@ Dieses Projekt wurde für akademische Zwecke entwickelt.
 
 ## Zukünftige Erweiterungen
 
-- [ ] Session-Management für Multi-User-Support
-- [ ] Authentifizierung und Nutzerkonten
-- [ ] Spotify/YouTube-Integration
-- [ ] Erweiterte Such-Algorithmen
-- [ ] Song-Vorschau-Player
-- [ ] Export/Import von Playlists
+- Session-Management für Multi-User-Support
+- Authentifizierung und Nutzerkonten
+- Spotify/YouTube-Integration
+- Erweiterte Such-Algorithmen
+- Song-Vorschau-Player
+- Export/Import von Playlists
