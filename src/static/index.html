@@ -215,7 +215,7 @@ select.field option { background: #2d2d2d; }
         <button class="btn btn-purple" onclick="sendMessage()">Senden</button>
     </div>
     <div class="chat-extra-row">
-        <button class="btn btn-blue" onclick="randomVibe()" style="flex:1">UEBERRASCH MICH</button>
+        <button class="btn btn-blue" onclick="randomVibe()" style="flex:1">ÜBERASCH MICH</button>
         <button class="btn btn-red"  onclick="openYouTube()">YouTube</button>
         <button class="btn btn-gray" onclick="resetChat()">Reset</button>
     </div>
@@ -223,7 +223,7 @@ select.field option { background: #2d2d2d; }
 
 <!-- TAB 2: VERWALTUNG -->
 <div id="tab-admin" class="tab-panel" style="overflow-y:auto;">
-    <div class="section-title purple">Neuen Song hinzufuegen</div>
+    <div class="section-title purple">Neuen Song hinzufügen</div>
     <div class="form-card">
         <input id="s-title"   class="field" type="text" placeholder="Titel" />
         <input id="s-artist"  class="field" type="text" placeholder="Artist" />
@@ -336,14 +336,14 @@ select.field option { background: #2d2d2d; }
         document.getElementById('userInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
-        addMessage('bot', 'Willkommen! Beschreibe, was du hoeren moechtest.');
+        addMessage('bot', 'Willkommen! Beschreibe, was du hören moechtest. Bitte gebe deine Wörter in folgender Reihenfolge ein: Keyword, Genre, Tempo, Mood');
     });
 
     async function resetChat() {
         await fetch('/reset', { method: 'POST' });
         currentSong = null;
         document.getElementById('chat-display').innerHTML = '';
-        addMessage('bot', 'Neue Suche! Beschreibe, was du hoeren moechtest.');
+        addMessage('bot', 'Neue Suche! Beschreibe, was du hören moechtest.');
     }
 
     async function randomVibe() {
