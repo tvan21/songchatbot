@@ -28,19 +28,6 @@ Der Song Chatbot hilft Nutzern, passende Songs basierend auf ihren Vorlieben zu 
 - **Linting**: flake8
 - **CI/CD**: GitHub Actions
 
-## Projektstruktur
-
-.
-├── chatbot.py          # Chatbot-Logik und Konversationssteuerung
-├── song.py             # Song-Datenmodell
-├── songlibrary.py      # Song-Verwaltung und Datenbankzugriff
-├── songchatbot.py      # FastAPI-Anwendung mit REST-Endpoints
-├── songs.db            # SQLite-Datenbank (wird automatisch erstellt)
-├── static/
-│   └── index.html      # Web-Interface
-├── test/               # Unit-Tests
-└── requirements.txt    # Python-Abhängigkeiten
-
 
 ### Voraussetzungen
 
@@ -158,7 +145,6 @@ Das Projekt folgt einer **3-Tier-Architektur**:
 Presentation Layer         
 (HTML/JavaScript)          
 
-  
 Application Layer          
 (FastAPI REST API)         
 
